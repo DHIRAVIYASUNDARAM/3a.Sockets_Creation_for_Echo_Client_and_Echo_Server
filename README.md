@@ -11,45 +11,33 @@ Sockets Links.
  server .
 4. Send and receive the message using the send function in socket.
 ## PROGRAM
-### SERVER:
+## CLIENT:
 ```
 import socket
-
-HOST = '127.0.0.1'  
-PORT = 65432       
-
-with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-    s.bind((HOST, PORT))
-    s.listen()
-    conn, addr = s.accept()
-    with conn:
-        print('Connected by', addr)
-        while True:
-            data = conn.recv(1024)
-            if not data:
-                break
-            conn.sendall(data)
+s=socket.socket()
+s.connect(('localhost',8000))
+while True:
+ msg=input("Client > ")
+ s.send(msg.encode())
+ print("Server > ",s.recv(1024).decode())
 ```
-### CLIENT:
+## SERVER:
 ```
 import socket
-
-HOST = '127.0.0.1'  
-PORT = 65432        
-
-with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-    s.connect((HOST, PORT))
-    while True:
-        message = input("Enter message to send to server: ")
-        s.sendall(message.encode())
-        data = s.recv(1024)
-        print('Received', repr(data.decode()))
+s=socket.socket()
+s.bind(('localhost',8000))
+s.listen(5)
+c,addr=s.accept()
+while True:
+ ClientMessage=c.recv(1024).decode()
+ c.send(ClientMessage.encode())
 ```
 ## OUPUT
+### CLIENT: 
+![image](https://github.com/DHIRAVIYASUNDARAM/3a.Sockets_Creation_for_Echo_Client_and_Echo_Server/assets/165143880/2ba73b8a-9929-4501-b08d-46d07d1c06ed)
+
 ### SERVER:
-![Screenshot 2024-03-30 102457](https://github.com/DHIRAVIYASUNDARAM/3a.Sockets_Creation_for_Echo_Client_and_Echo_Server/assets/165143880/fb93fc02-ecfe-4c21-a044-dd1140001462)
-### CLIENT:
-![Screenshot 2024-03-30 102512](https://github.com/DHIRAVIYASUNDARAM/3a.Sockets_Creation_for_Echo_Client_and_Echo_Server/assets/165143880/6e088621-5bcb-46b8-a394-37f14410fa0d)
+![image](https://github.com/DHIRAVIYASUNDARAM/3a.Sockets_Creation_for_Echo_Client_and_Echo_Server/assets/165143880/d8c05e13-10eb-4fdd-b039-0db2d1be0d34)
 
 ## RESULT
 Thus, the python program for creating Echo Client and Echo Server using TCP Sockets Links 
